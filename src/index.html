@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset='UTF-8' />
+        <title>Chaophony</title>
+        <!--(if target dev)><!-->
+        <link rel='stylesheet' type='text/css' href='chaophony.css' />
+        <script src='../bower_components/ramda/ramda.js'></script>
+        <script src='polysynth.js'></script>
+        <script src='pendulum.js'></script>
+        <script src='rk4.js'></script>
+        <script src='graphics.js'></script>
+        <script src='pads.js'></script>
+        <script src='config.js'></script>
+        <script src='chaophony.js'></script>
+        <!--<!(endif)-->
+        <!--(if target dist)>
+        <link rel='stylesheet' type='text/css' href='chaophony.min.css' />
+        <script src='chaophony.min.js'></script>
+        <!(endif)-->
+    </head>
+
+    <body>
+        <div id='bassContainer'>
+            <canvas></canvas>
+        </div>
+        <div id='melodyContainer'>
+            <canvas></canvas>
+        </div>
+    </body>
+</html>
+
