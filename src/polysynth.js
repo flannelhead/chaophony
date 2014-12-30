@@ -2,12 +2,9 @@ function createSynth(audioCtx, baseFrequency, tuning, harmonics, envelope) {
     var base = Math.pow(2, 1/12),
         master = audioCtx.createGain();
 
-    var normalizedHarmonics = R.map(R.divide(void 0, R.sum(harmonics) + 1),
-        R.prepend(1, harmonics));
-
     var notes = R.map(function(note) {
         return createNote(baseFrequency * Math.pow(base, note),
-            normalizedHarmonics, audioCtx);
+            R.prepend(1, harmonics), audioCtx);
     }, tuning);
 
     R.forEach(function(note) { note.connect(master); }, notes);
