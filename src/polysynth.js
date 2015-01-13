@@ -2,12 +2,9 @@ function createSynth(audioCtx, baseFrequency, tuning, harmonics, envelope) {
     var base = Math.pow(2, 1/12),
         master = audioCtx.createGain();
 
-    var normalizedHarmonics = R.map(R.divide(void 0, R.sum(harmonics) + 1),
-        R.prepend(1, harmonics));
-
     var notes = R.map(function(note) {
         return createNote(baseFrequency * Math.pow(base, note),
-            normalizedHarmonics, audioCtx);
+            R.prepend(1, harmonics), audioCtx);
     }, tuning);
 
     R.forEach(function(note) { note.connect(master); }, notes);
@@ -18,29 +15,20 @@ function createSynth(audioCtx, baseFrequency, tuning, harmonics, envelope) {
 function createNote(freq, harmonics, audioCtx) {
     var main = audioCtx.createGain();
     main.gain.value = 0;
-    var fn = function(harmonic) {
-        if (harmonic[1] !== 0) {
-            var oscillator = audioCtx.createOscillator(),
-                gain = audioCtx.createGain();
-            gain.gain.value = harmonic[0];
-            oscillator.frequency.value = freq * harmonic[1];
-            oscillator.connect(gain);
-            gain.connect(main);
-            oscillator.start();
-        }
-    };
+
+    var amplitudes = new Float32Array(harmonics.length + 1);
 
     R.forEach(function(harmonic) {
-        if (harmonic[1] !== 0) {
-            var oscillator = audioCtx.createOscillator(),
-                gain = audioCtx.createGain();
-            gain.gain.value = harmonic[0];
-            oscillator.frequency.value = freq * harmonic[1];
-            oscillator.connect(gain);
-            gain.connect(main);
-            oscillator.start();
-        }
+        amplitudes[harmonic[1]] = harmonic[0];
     }, R.zip(harmonics, R.range(1, harmonics.length + 1)));
+
+    var wave = audioCtx.createPeriodicWave(amplitudes,
+        new Float32Array(harmonics.length + 1)),
+        osc = audioCtx.createOscillator();
+    osc.setPeriodicWave(wave);
+    osc.frequency.value = freq;
+    osc.connect(main);
+    osc.start();
 
     return main;
 }
