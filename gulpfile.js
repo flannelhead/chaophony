@@ -5,7 +5,8 @@ var gulp = require('gulp'),
     cssmin = require('gulp-cssmin'),
     rev = require('gulp-rev'),
     revReplace = require('gulp-rev-replace'),
-    del = require('del');
+    del = require('del'),
+    deploy = require('gulp-gh-pages');
 
 gulp.task('clean', function(cb) { del('dist', cb); });
 
@@ -21,5 +22,10 @@ gulp.task('build', ['clean'], function() {
         .pipe(useref())
         .pipe(revReplace())
         .pipe(gulp.dest('dist'));
+});
+
+gulp.task('deploy', ['build'], function() {
+    return gulp.src('dist/**/*')
+        .pipe(deploy({remoteUrl: 'https://github.com/flannelhead/chaophony.git'}));
 });
 
