@@ -4,8 +4,11 @@
     <head>
         <meta charset='UTF-8' />
         <title>Chaophony</title>
-        <!--(if target dev)><!-->
+
+        <!-- build:css chaophony.min.css -->
         <link rel='stylesheet' type='text/css' href='chaophony.css' />
+        <!-- endbuild -->
+        <!-- build:js chaophony.min.js -->
         <script src='../bower_components/ramda/ramda.js'></script>
         <script src='polysynth.js'></script>
         <script src='pendulum.js'></script>
@@ -14,11 +17,7 @@
         <script src='pads.js'></script>
         <script src='config.js'></script>
         <script src='chaophony.js'></script>
-        <!--<!(endif)-->
-        <!--(if target dist)>
-        <link rel='stylesheet' type='text/css' href='chaophony.min.css' />
-        <script src='chaophony.min.js'></script>
-        <!(endif)-->
+        <!-- endbuild -->
     </head>
 
     <body>
